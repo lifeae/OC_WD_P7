@@ -2,3 +2,7 @@
 ## Parcours Développeur Web - Projet 7 : Créez un réseau social d'entreprise
 ### Livrables
 *  Le lien du repo GitHub contenant le code de l’application.
+
+## Backend
+Démarrer le serveur de la base de données (WampServer dans mon cas)
+Démarrer le serveur : `nodemon server`
