@@ -1,0 +1,56 @@
+body {
+  color: #FFFFFF;
+  background-color: #000000;
+  font-family: 'Roboto';
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+svg {
+  display: block;
+  margin: auto;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+button {
+  padding: 1rem 2rem 1rem 2rem;
+  margin: 20px;
+  font-size: 1rem;
+  color: #FFFFFF;
+  background-color: transparent;
+  border: 2px solid #FFFFFF;
+}
+
+button:hover {
+  padding: 1rem 2rem 1rem 2rem;
+  margin: 20px;
+  color: #000000;
+  background-color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+}
+
+button:focus {
+  border: 3px solid #FFFFFF;
+}
+
+label {
+  display: block;
+  margin: 10px;
+}
+
+input {
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  background-color: transparent;
+  color: #FFFFFF;
+  border: 2px solid #FFFFFF;
+}
+
+input:focus {
+  border: 3px solid #FFFFFF;
+}
+
+hr {
+  color: #FFFFFF;
+}

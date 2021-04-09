@@ -1,7 +1,7 @@
 // Dépendances
 const express = require('express');
 const app = express();
-const authRoutes = require('./routes/auth');
+const authentificationRoutes = require('./routes/authentification');
 const userRoutes = require('./routes/user');
 const postRoutes = require('./routes/post');
 const commentRoutes = require('./routes/comment');
@@ -9,8 +9,8 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv').config();
 const path = require('path');
 const helmet = require('helmet');
-const rateLimit = require("express-rate-limit");
-const dbConnection = require("./dbConnection");
+const rateLimit = require('express-rate-limit');
+const dbConnection = require('./dbConnection');
 
 // Securité
 const limiter = rateLimit({
@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 // Redirige vers d'autres fichiers
-app.use('/auth', authRoutes);
+app.use('/auth', authentificationRoutes);
 app.use('/user', userRoutes);
 app.use('/posts', postRoutes);
 app.use('/comments', commentRoutes);

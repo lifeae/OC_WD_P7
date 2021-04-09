@@ -1,32 +1,46 @@
 const mysql = require('mysql');
-const dbConnection = require("../dbConnection");
+const dbConnection = require('../dbConnection');
 
-exports.getProfile = (req, res, next) => {
-  let sqlQuery = "SELECT * FROM users WHERE id= ?;";
-  let parameters = [req.params.id];
-  sqlQuery = mysql.format(sqlQuery, parameters);
-  dbConnection.query(sqlQuery, function (err, result, fields) {
-    if (err) throw err;
-    res.send(result);
-  });
+exports.getProfile = (profileId) => {
+  return new Promise((res, rej) => {
+    let sqlQuery = "SELECT * FROM users WHERE id= ?;";
+    sqlQuery = mysql.format(sqlQuery, profileId);
+    dbConnection.query(sqlQuery, function (err, result, fields) {
+      if (err) throw err;
+      res(result);
+    });
+  })
 };
 
-exports.modifyProfile = (req, res, next) => {
-  let sqlQuery = "UPDATE users SET firstname= ?, lastname= ?, email= ?, picture= ?, position= ?, phone= ? WHERE id= ?;";
-  let parameters = [req.body.firstname, req.body.lastname, req.body.email, req.body.picture, req.body.position, req.body.phone, req.params.id];
-  sqlQuery = mysql.format(sqlQuery, parameters);
-  dbConnection.query(sqlQuery, function (err, result, fields) {
-    if (err) throw err;
-    res.send("Profil modifié !");
-  });
+exports.modifyProfile = (firstname, lastname, email, picture, position, phone, id) => {
+  return new Promise((res, rej) => {
+    let sqlQuery = "UPDATE users SET firstname= ?, lastname= ?, email= ?, picture= ?, position= ?, phone= ? WHERE id= ?;";
+    sqlQuery = mysql.format(sqlQuery, [firstname, lastname, email, `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, position, phone, id]);
+    dbConnection.query(sqlQuery, function (err, result, fields) {
+      if (err) throw err;
+      res('Profil modifié !');
+    });
+  })
 };
 
-exports.deleteProfile = (req, res, next) => {
-  let sqlQuery = "DELETE FROM users WHERE id= ?;";
-  let parameters = [req.params.id];
-  sqlQuery = mysql.format(sqlQuery, parameters);
-  dbConnection.query(sqlQuery, function (err, result, fields) {
-    if (err) throw err;
-    res.send("Compte supprimé !");
-  });
+exports.deleteProfile = (profileId) => {
+  return new Promise((res, rej) => {
+    let sqlQuery = "DELETE FROM users WHERE id= ?;";
+    sqlQuery = mysql.format(sqlQuery, profileId);
+    dbConnection.query(sqlQuery, function (err, result, fields) {
+      if (err) throw err;
+      res('Compte supprimé !');
+    });
+  })
+};
+
+exports.isUserAdmin = (user) => {
+  return new Promise((res, rej) => {
+    let sqlQuery = "SELECT * FROM users WHERE id= ? AND is_admin= ?;";
+    sqlQuery = mysql.format(sqlQuery, [user, 1]);
+    dbConnection.query(sqlQuery, function (err, result, fields) {
+      if (err) throw err;
+      res(result);
+    });
+  })
 };

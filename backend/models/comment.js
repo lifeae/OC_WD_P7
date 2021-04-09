@@ -1,33 +1,46 @@
-const fs = require('fs');
 const mysql = require('mysql');
-const dbConnection = require("../dbConnection");
+const dbConnection = require('../dbConnection');
 
-exports.createComment = (req, res, next) => {
-  let sqlQuery = "INSERT INTO comments (id_user, text, datetime) VALUES (?, ?, CURRENT_TIMESTAMP);";
-  let parameters = ["1", req.body.text]; // MODIFIER CE 1 par l'id de l'utilisateur connecté
-  sqlQuery = mysql.format(sqlQuery, parameters);
-  dbConnection.query(sqlQuery, function (err, result, fields) {
-    if (err) throw err;
-    res.send(result);
-  });
+exports.getOneComment = (id) => {
+  return new Promise((res, rej) => {
+    let sqlQuery = "SELECT * FROM comments WHERE id= ?;";
+    sqlQuery = mysql.format(sqlQuery, id);
+    dbConnection.query(sqlQuery, function (err, result, fields) {
+      if (err) throw err;
+      return res(result);
+    });
+  })
 };
 
-exports.modifyComment = (req, res, next) => {
-  let sqlQuery = "UPDATE comments SET text= ? WHERE comments.id= ? ;";
-  let parameters = [req.body.text, req.params.id];
-  sqlQuery = mysql.format(sqlQuery, parameters);
-  dbConnection.query(sqlQuery, function (err, result, fields) {
-    if (err) throw err;
-    res.send("Comment modifié !");
-  });
+exports.createComment = (userId, text, id_post) => {
+  return new Promise((res, rej) => {
+    let sqlQuery = "INSERT INTO comments (id_user, id_post, text, datetime) VALUES (?, ?, ?, CURRENT_TIMESTAMP);";
+    sqlQuery = mysql.format(sqlQuery, [userId, id_post, text]);
+    dbConnection.query(sqlQuery, function (err, result, fields) {
+      if (err) throw err;
+      return res(result);
+    });
+  })
 };
 
-exports.deleteComment = (req, res, next) => {
-  let sqlQuery = "DELETE FROM comments WHERE comments.id = ?;";
-  let parameters = [req.params.id];
-  sqlQuery = mysql.format(sqlQuery, parameters);
-  dbConnection.query(sqlQuery, function (err, result, fields) {
-    if (err) throw err;
-    res.send("Comment supprimé !");
-  });
+exports.modifyComment = (text, idComment) => {
+  return new Promise((res, rej) => {
+    let sqlQuery = "UPDATE comments SET text= ? WHERE comments.id= ? ;";
+    sqlQuery = mysql.format(sqlQuery, [text, idComment]);
+    dbConnection.query(sqlQuery, function (err, result, fields) {
+      if (err) throw err;
+      return res('Comment modifié !');
+    });
+  })
+};
+
+exports.deleteComment = (idComment) => {
+  return new Promise((res, rej) => {
+    let sqlQuery = "DELETE FROM comments WHERE comments.id = ?;";
+    sqlQuery = mysql.format(sqlQuery, idComment);
+    dbConnection.query(sqlQuery, function (err, result, fields) {
+      if (err) throw err;
+      return res('Comment supprimé !');
+    });
+  })
 };
