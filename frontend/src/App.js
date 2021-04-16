@@ -1,9 +1,10 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
-import Welcome from './components/Welcome';
-import SignIn from './components/SignIn';
-import SignUp from './components/SignUp';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import AuthentificationSection from './components/AuthentificationSection';
+import DEBUG from './debug'
 import Home from './components/Home';
+import Login from './components/Login';
+import SignUp from './components/SignUp';
 import './style/App.css';
 
 class App extends Component {
@@ -11,15 +12,36 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      isUserConnected: ""
     };
+    this.checkIfTheUserIsConnected();
+  }
+
+  checkIfTheUserIsConnected() {
+    if (sessionStorage.getItem('token') !== null) {
+      if (DEBUG) console.log("L'utisateur est connecté.");
+      return this.setState({ isUserConnected: true });
+    } else {
+      if (DEBUG) console.log("L'utisateur n'est pas connecté.");
+      return this.setState({ isUserConnected: false });
+    }
+  }
+
+  whatToDoDependingOnTheUserLoginStatus() {
+    if (this.state.isUserConnected === true) {
+      if (DEBUG) console.log("Redirection vers le feed de l'utisateur.");
+      return <Redirect to='/home' />;
+    } else {
+      if (DEBUG) console.log("Redirection vers la section d'authentification.");
+      return <Redirect to='/auth' props={this.state.isUserConnected} />
+    }
   }
 
   render() {
     return (
       <Fragment>
         <svg
-        
+
           xmlns='http://www.w3.org/2000/svg'
           width='485'
           height='78'
@@ -42,10 +64,11 @@ class App extends Component {
         </svg>
         <hr></hr>
         <BrowserRouter>
-          <Route path='/' exact component={Welcome}/>
-          <Route path='/connexion' exact component={SignIn}/>
-          <Route path='/inscription' exact component={SignUp}/>
-          <Route path='/home' exact component={Home}/>
+          <Route path='/auth' exact component={AuthentificationSection} />
+          <Route path='/login' exact component={Login} />
+          <Route path='/signup' exact component={SignUp} />
+          <Route path='/home' exact component={Home} />
+          {this.whatToDoDependingOnTheUserLoginStatus()}
         </BrowserRouter>
       </Fragment>
     );

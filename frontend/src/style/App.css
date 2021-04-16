@@ -1,7 +1,7 @@
 body {
-  color: #FFFFFF;
+  color: #ffffff;
   background-color: #000000;
-  font-family: 'Roboto';
+  font-family: "Lato";
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -18,21 +18,21 @@ button {
   padding: 1rem 2rem 1rem 2rem;
   margin: 20px;
   font-size: 1rem;
-  color: #FFFFFF;
+  color: #ffffff;
   background-color: transparent;
-  border: 2px solid #FFFFFF;
+  border: 2px solid #ffffff;
 }
 
 button:hover {
   padding: 1rem 2rem 1rem 2rem;
   margin: 20px;
   color: #000000;
-  background-color: #FFFFFF;
-  border: 2px solid #FFFFFF;
+  background-color: #ffffff;
+  border: 2px solid #ffffff;
 }
 
 button:focus {
-  border: 3px solid #FFFFFF;
+  border: 3px solid #ffffff;
 }
 
 label {
@@ -43,14 +43,14 @@ label {
 input {
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
   background-color: transparent;
-  color: #FFFFFF;
-  border: 2px solid #FFFFFF;
+  color: #ffffff;
+  border: 2px solid #ffffff;
 }
 
 input:focus {
-  border: 3px solid #FFFFFF;
+  border: 3px solid #ffffff;
 }
 
 hr {
-  color: #FFFFFF;
+  color: #ffffff;
 }

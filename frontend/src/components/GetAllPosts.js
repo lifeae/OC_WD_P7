@@ -1,5 +1,4 @@
-import React, {Component, Fragment} from 'react';
-import DEBUG from '../debug';
+import React, { Component, Fragment } from 'react';
 
 function DisplayAllPosts() {
   return (
@@ -9,7 +8,7 @@ function DisplayAllPosts() {
   );
 }
 
-function getAllPosts() {
+function GetAllPosts() {
   // Préparation des paramètres de la requête
   let headers = {
     'Accept': 'application/json, text/plain, */*',
@@ -24,7 +23,8 @@ function getAllPosts() {
   }
 
   fetch('http://localhost:3000/posts', request)
-  .then(result => console.log(result));
+    .then(result => result.json())
+    .then(result => console.log(result))
   // Changer de page ?
 }
 

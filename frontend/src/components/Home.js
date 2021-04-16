@@ -1,13 +1,10 @@
-import React, {Component, Fragment} from 'react';
-import DEBUG from '../debug';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import React, { Component } from 'react';
 
 class Home extends Component {
+
   render() {
     return (
-      <Fragment>
-        <h1>Tu es connecté bro' !</h1>
-      </Fragment>
+      <h1>Bienvenu cher user connecté !</h1>
     );
   }
 }

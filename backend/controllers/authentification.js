@@ -29,9 +29,8 @@ exports.login = (req, res, next) => {
     }
     bcrypt.compare(req.body.password, user.password, function(err, result) { // Comparaison du mot de passe saisie avec le hash enregistré en BDD
       if (err) throw err;
-      console.log(result);
       if (result) {
-        res.status(200).json({ // On renvoie l'id de l'utilisateur et son jeton
+        return res.status(200).json({ // On renvoie l'id de l'utilisateur et son jeton
           userId: user.id,
           token: jwt.sign(
             { userId: user.id },
