@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Grouporama - Home</title>
+  <link rel="icon" href="../images/icon.png" />
+  <link href="../css/main.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <script src="../js/debug.js" defer></script>
+  <script src="../js/home.js" defer></script>
+  <script src="../js/getAllPosts.js" defer></script>
+</head>
+<body>
+  <h1>Grouporama</h1>
+  <!-- Une partie utilisateur connecté avec la liste des posts -->
+  <div class='user-is-connected'>
+    <button onclick="logOut()">Se déconnecter</button>
+    <div class='posts'>
+      <p>Posts</p>
+    </div>
+  </div>
+  <!-- Une partie utilisateur déconnecté avec les boutons pour se connecter ou s'inscrire -->
+  <div class='user-is-disconnected'>
+    <a href="./login.html"><button>Se connecter</button></a>
+    <a href="./signup.html"><button>S'inscrire</button></a>
+  </div>
+
+</body>
+</html>

@@ -1,19 +1,9 @@
-import React, { Component, Fragment } from 'react';
-
-function DisplayAllPosts() {
-  return (
-    <Fragment>
-      <h2>GetAllPosts</h2>
-    </Fragment>
-  );
-}
-
-function GetAllPosts() {
+function getAllPosts() {
   // Préparation des paramètres de la requête
   let headers = {
     'Accept': 'application/json, text/plain, */*',
     'Content-Type': 'application/json',
-    'Authorization': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTYxNzI3OTM2NiwiZXhwIjoxNjE3MzY1NzY2fQ.DdvuKiKXcwTk3eXYjBw7wwXLBWpo64dkruRG2KeyFBw'
+    'Authorization': `Bearer ${sessionStorage.getItem('token')}`
   };
 
   // Assemblage de la requête
@@ -28,4 +18,4 @@ function GetAllPosts() {
   // Changer de page ?
 }
 
-export default GetAllPosts;
+getAllPosts();
