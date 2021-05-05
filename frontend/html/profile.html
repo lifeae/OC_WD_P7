@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Grouporama - Profil</title>
+  <link rel="icon" href="../images/icon.png" />
+  <link href="../css/main.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <script src="../js/debug.js"></script>
+  <script src="../js/library.js"></script>
+  <script src="../js/profile.js" defer></script>
+
+</head>
+
+<body>
+  <a href="./home.html"><h1>Grouporama</h1></a>
+  <h2>Réseau social interne</h2>
+  <h3>Profil</h3>
+  <div class="user-informations">
+    <label for="firstname">Prénom</label>
+    <input type="text" id="firstname">
+    <label for="lastname">Nom</label>
+    <input type="text" id="lastname">
+    <label for="email">Email</label>
+    <input type="email" id="email">
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password">
+    <label for="profil-picture">Photo de profil</label>
+    <input type="file" id="profil-picture">
+    <label for="position">Poste occupé</label>
+    <input type="text" id="position">
+    <label for="phone">Téléphone</label>
+    <input type="text" id="phone">
+  </div>
+  <button onclick="modifyProfile()">Modifier le profil</button>
+  <button onclick="deleteProfile()">Supprimer le compte</button>
+  
+</body>
+
+</html>

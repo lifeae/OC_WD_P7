@@ -26,7 +26,7 @@ module.exports = (req, res, next) => {
   let routeUsed = req.originalUrl.split('/')[1];
   switch (routeUsed) {
     case 'user': // du profil qu'il souhaite modifier ?
-        if (req.params.id !== req.user) {
+        if (req.params.id != req.user) {
           return console.log(`Vous n'êtes pas propriétaire de ce profil. Vous ne pouvez pas le modifier.`);
         } else {
           isUserAuthorize = true;
@@ -39,8 +39,7 @@ module.exports = (req, res, next) => {
     case 'posts': // du post qu'il souhaite modifier ?
       postMdl.getOnePost(req.params.id)
       .then(result => {
-        console.log(result);
-        if (result[0].id_user !== req.user) {
+        if (result[0].id_user != req.user) {
           return console.log(`Vous n'êtes pas propriétaire de ce post. Vous ne pouvez pas le modifier.`);
         } else {
           isUserAuthorize = true;
@@ -56,7 +55,7 @@ module.exports = (req, res, next) => {
     case 'comments': // du commentaire qu'il souhaite modifier ?
       commentMdl.getOneComment(req.params.id)
       .then(result => {
-        if (result[0].id_user !== req.user) {
+        if (result[0].id_user != req.user) {
           return console.log(`Vous n'êtes pas propriétaire de ce commentaire. Vous ne pouvez pas le modifier.`);
         } else {
           isUserAuthorize = true;

@@ -8,7 +8,11 @@ exports.getProfile = (req, res, next) => {
 };
 
 exports.modifyProfile = (req, res, next) => {
-  userMdl.modifyProfile(req.body.firstname, req.body.lastname, req.body.email, `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, req.body.position, req.body.phone, req.params.id)
+  let picture = "";
+  if (req.file !== undefined) {
+    picture = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+  }
+  userMdl.modifyProfile(req.body.firstname, req.body.lastname, req.body.email, picture, req.body.position, req.body.phone, req.params.id)
   .then(result => {
     res.status(200).json({result: result});
   })

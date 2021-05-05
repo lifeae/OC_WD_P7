@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt');
-const { json } = require('body-parser');
 const jwt = require('jsonwebtoken');
 const authentificationMdl = require('../models/authentification');
 
@@ -22,6 +21,9 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
+  if (req.body.email === undefined) {
+    return res.status(400).json({ error: `Aucun email n'a été evoyé à l'API.` });
+  }
   authentificationMdl.login(req.body.email)
   .then(user => {
     if (user === undefined) {

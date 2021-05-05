@@ -1,10 +1,21 @@
 const mysql = require('mysql');
 const dbConnection = require('../dbConnection');
 
-exports.getOneComment = (id) => {
+exports.getComments = (postId) => {
+  return new Promise((res, rej) => {
+    let sqlQuery = "SELECT * FROM comments WHERE id_post= ?;";
+    sqlQuery = mysql.format(sqlQuery, postId);
+    dbConnection.query(sqlQuery, function (err, result, fields) {
+      if (err) throw err;
+      return res(result);
+    });
+  })
+};
+
+exports.getOneComment = (commentId) => {
   return new Promise((res, rej) => {
     let sqlQuery = "SELECT * FROM comments WHERE id= ?;";
-    sqlQuery = mysql.format(sqlQuery, id);
+    sqlQuery = mysql.format(sqlQuery, commentId);
     dbConnection.query(sqlQuery, function (err, result, fields) {
       if (err) throw err;
       return res(result);

@@ -2,13 +2,8 @@ body {
   color: #ffffff;
   background-color: #000000;
   font-family: "Lato";
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   text-align: center;
 }
 
@@ -69,4 +64,3 @@ hr {
   border: 2px solid #ffffff;
   margin: 5px 50px;
 }
-/*# sourceMappingURL=main.css.map */

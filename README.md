@@ -3,6 +3,13 @@
 ### Livrables
 *  Le lien du repo GitHub contenant le code de l’application.
 
+## Prérecquis
+ - NodeJs
+ - MySQL
 ## Backend
 Démarrer le serveur de la base de données (WampServer dans mon cas)
+Installer les modules nécessaires : `npm install`
 Démarrer le serveur : `nodemon server`
+
+## Frontend
+Ouvrez le fichier home.html

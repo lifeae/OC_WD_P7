@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <title>Grouporama - Home</title>
@@ -7,17 +8,24 @@
   <link href="../css/main.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-  <script src="../js/debug.js" defer></script>
+  <script src="../js/debug.js"></script>
+  <script src="../js/library.js"></script>
   <script src="../js/home.js" defer></script>
-  <script src="../js/getAllPosts.js" defer></script>
+  <script src="../js/posts.js" defer></script>
 </head>
+
 <body>
-  <h1>Grouporama</h1>
+  <a href="./home.html"><h1>Grouporama</h1></a>
+  <h2>Réseau social interne</h2>
   <!-- Une partie utilisateur connecté avec la liste des posts -->
   <div class='user-is-connected'>
     <button onclick="logOut()">Se déconnecter</button>
-    <div class='posts'>
-      <p>Posts</p>
+    <button onclick="goToUserProfile()">Profil</button>
+    <div id='posts-container'>
+      <p>Actualités</p>
+      <label for="new-post">Quoi de neuf ?</label>
+      <input type="text" id="new-post" placeholder="Ecrivez un nouveau post ...">
+      <button type="submit" onclick="createPost()">Envoyer</button>
     </div>
   </div>
   <!-- Une partie utilisateur déconnecté avec les boutons pour se connecter ou s'inscrire -->
@@ -27,4 +35,5 @@
   </div>
 
 </body>
+
 </html>

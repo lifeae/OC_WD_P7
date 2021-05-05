@@ -17,7 +17,6 @@ exports.createPost = (userId, text) => {
   return new Promise((res, rej) => {
     let sqlQuery = "INSERT INTO posts (id_user, text, datetime) VALUES (?, ?, CURRENT_TIMESTAMP);";
     sqlQuery = mysql.format(sqlQuery, [userId, text]);
-    console.log(userId, text);
     dbConnection.query(sqlQuery, function (err, result, fields) {
       if (err) throw err;
       return res(result);

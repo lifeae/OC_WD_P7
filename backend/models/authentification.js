@@ -15,8 +15,8 @@ exports.signup = (email, hash) => {
 exports.login = (email) => {
   return new Promise((res, rej) => {
     let sqlQuery = "SELECT * FROM users WHERE email= ?;";
-    sqlQuery = mysql.format(sqlQuery, email);
-    dbConnection.query(sqlQuery, function (err, result, fields) {
+    let test = mysql.format(sqlQuery, email);
+    dbConnection.query(test, function (err, result, fields) {
       if (err) rej(err);
       return res(result[0]);
     });

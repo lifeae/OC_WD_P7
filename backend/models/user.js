@@ -15,7 +15,7 @@ exports.getProfile = (profileId) => {
 exports.modifyProfile = (firstname, lastname, email, picture, position, phone, id) => {
   return new Promise((res, rej) => {
     let sqlQuery = "UPDATE users SET firstname= ?, lastname= ?, email= ?, picture= ?, position= ?, phone= ? WHERE id= ?;";
-    sqlQuery = mysql.format(sqlQuery, [firstname, lastname, email, `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, position, phone, id]);
+    sqlQuery = mysql.format(sqlQuery, [firstname, lastname, email, picture, position, phone, id]);
     dbConnection.query(sqlQuery, function (err, result, fields) {
       if (err) throw err;
       res('Profil modifié !');
