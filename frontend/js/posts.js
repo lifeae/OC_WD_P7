@@ -1,3 +1,240 @@
+function createPost() {
+  let text = document.querySelector("#new-post"),
+    body = {
+      text: text.value
+    };
+
+  text.value = ``;
+  request = getTheApiRequest(body, "POST", "application/json");
+  fetch(`http://localhost:${PORT}/posts`, request)
+    .then(result => result.json())
+    .then(data => data.result)
+    .then(result => {
+      if (DEBUG) console.group(`Requête envoyée :`, request);
+      if (DEBUG) console.log(`Requête envoyée :`, request);
+      if (DEBUG) console.log(`Post crée !`);
+      if (DEBUG) console.log(`Champ de saisie vidé !`);
+      if (DEBUG) console.groupEnd();
+      window.location.reload();
+    })
+}
+
+function modifyPost() {
+  let postId = this.closest("*[data-id]").dataset.id,
+    oldPost = document.querySelector(`*[data-id="${postId}"] .post-text`).textContent,
+    newPost = prompt(`Modifier le post`, oldPost),
+    body = {
+      text: newPost,
+      post_id: postId
+    },
+    request = getTheApiRequest(body, "PUT", "application/json");
+
+  fetch(`http://localhost:${PORT}/posts/${postId}`, request)
+    .then(result => result.json())
+    .then(data => data.result[0])
+    .then(comment => {
+      if (DEBUG) console.group(`Modification d'un post.`);
+      if (DEBUG) console.log(`Requête envoyée :`, request);
+      if (DEBUG) console.log(`Post modifié !`);
+      if (DEBUG) console.log(`Réactualisation de la page.`);
+      if (DEBUG) console.groupEnd();
+      window.location.reload();
+    })
+}
+
+function deletePost() {
+  let postId = this.closest("*[data-id]").dataset.id;
+  let request = getTheApiRequest(null, "DELETE", "application/json");
+
+  fetch(`http://localhost:${PORT}/posts/${postId}`, request)
+    .then(result => result.json())
+    .then(data => data.result[0])
+    .then(post => {
+      if (DEBUG) console.log(post);
+      if (DEBUG) console.group(`Suppression d'un post.`);
+      if (DEBUG) console.log(`Requête envoyée :`, request);
+      if (DEBUG) console.log(`Post supprimé !`);
+      if (DEBUG) console.log(`Réactualisation de la page.`);
+      if (DEBUG) console.groupEnd();
+      window.location.reload();
+    })
+}
+
+function getAllPosts() {
+  let request = getTheApiRequest(null, "GET");
+  fetch(`http://localhost:${PORT}/posts`, request)
+    .then(result => {
+      return result.json();
+    })
+    .then(data => {
+      userIsAdmin = data.userIsAdmin;
+      userIsConnected = data.userIsConnected;
+      userId = data.userId;
+      whatToDisplayDependingOnTheUserLoginStatus(userIsConnected);
+      addLinkToUserConnectedProfile(userId);
+      return data.result;
+    })
+    .then(posts => {
+      if (DEBUG) console.log(`Récupération de tous les posts`);
+      if (DEBUG) console.log(`Requête envoyée :`, request);
+      posts.forEach(post => {
+        displayOnePost(post);
+        displayCommentsForOnePost(post.id);
+      });
+    })
+}
+
+function getOnePost() {
+  let urlParameterPostId = getUrlParameters("id");
+  let request = getTheApiRequest(null, "GET", "application/json");
+  fetch(`http://localhost:${PORT}/posts/${urlParameterPostId}`, request)
+    .then(result => result.json())
+    .then(data => {
+      userIsAdmin = data.userIsAdmin;
+      userIsConnected = data.userIsConnected;
+      userId = data.userId;
+      canTheUserAccessThisPage(data.userIsConnected);
+      return data.result[0];
+    })
+    .then(post => {
+      if (DEBUG) console.group(`Récupération du post : ${urlParameterPostId}`);
+      if (DEBUG) console.log(`Requête envoyée :`, request);
+      displayOnePost(post);
+      displayCommentsForOnePost(urlParameterPostId);
+      console.groupEnd();
+    })
+}
+
+function displayOnePost(post) {
+
+  if (DEBUG) console.group(`Post n°${post.id}`);
+  if (DEBUG) console.log(post);
+  if (DEBUG) console.groupEnd();
+
+  let postsContainer = document.querySelector("#posts-container"),
+    postContainer = document.createElement("div"),
+    postInformations = document.createElement("div"),
+    ownerInformationsContainer = document.createElement("a"),
+    buttonsContainer = document.createElement("div"),
+    commentsContainer = document.createElement("div"),
+    commentsContainerTitle = document.createElement("h2"),
+    createCommentContainer = document.createElement("div");
+
+  postContainer.dataset.user = post.id_user;
+  postContainer.dataset.id = post.id;
+  postContainer.classList.add("post");
+  buttonsContainer.classList.add("buttons-container");
+  commentsContainer.classList.add("comments-container");
+  postInformations.classList.add("post-informations");
+  commentsContainerTitle.textContent = "Commentaires";
+
+  postsContainer.appendChild(postContainer);
+  postContainer.appendChild(postInformations);
+
+  postInformations.appendChild(ownerInformationsContainer);
+  displayUserInformationsToTheElement(post, ownerInformationsContainer)
+  displayDateTimeToTheElement(post, "post", postInformations);
+  displayTextToTheElement(post, "post", postContainer);
+
+  if (userLocation === "home.html") {
+    displayLinkToThePost(post, buttonsContainer);
+  };
+
+  if (userId === post.id_user || userIsAdmin) {
+    displayModifyButton("post", buttonsContainer);
+    displayDeleteButton("post", buttonsContainer);
+  }
+
+  postContainer.appendChild(buttonsContainer);
+  postContainer.appendChild(commentsContainer);
+  commentsContainer.appendChild(commentsContainerTitle);
+  postContainer.appendChild(createCommentContainer);
+  getStuffToCreateComment(createCommentContainer);
+}
+
+function displayTextToTheElement(element, elementType, elementContainer) {
+  let text = document.createElement("p");
+  elementContainer.appendChild(text);
+  text.innerHTML = element.text;
+  if (elementType === "post") {
+    text.classList.add("post-text");
+  } else if (elementType === "comment") {
+    text.classList.add("comment-text");
+  }
+}
+
+function displayDateTimeToTheElement(element, elementType, elementContainer) {
+  let datetime = document.createElement("p");
+  elementContainer.appendChild(datetime);
+  datetime.innerHTML = `le ${(new Date(element.datetime)).toLocaleDateString("fr-FR", { hour: "numeric", minute: "numeric" })}`;
+  if (elementType === "post") {
+    datetime.classList.add("post-datetime");
+  } else if (elementType === "comment") {
+    datetime.classList.add("comment-datetime");
+  }
+}
+
+function displayUserInformationsToTheElement(element, targetElement) {
+  // Créer un lien vers le profil de l'auteur
+  let profilePageLocation = `frontend/html/profile.html`,
+    urlToUserProfilePage;
+
+  if (window.location.origin !== "null") {
+    urlToUserProfilePage = `${window.location.origin}/${profilePageLocation}?id=${element.id_user}`;
+  } else {
+    urlToUserProfilePage = `${window.location.href.split("/frontend/html")[0]}/${profilePageLocation}?id=${element.id_user}`;
+  }
+
+  targetElement.classList.add("owner-informations");
+  targetElement.innerHTML = `${element.firstname} ${element.lastname}`;
+  targetElement.href = urlToUserProfilePage;
+}
+
+function displayLinkToThePost(post, targetElement) {
+  let postLink = document.createElement("a");
+  let postLinkContent = document.createElement("button");
+  targetElement.appendChild(postLink);
+  postLink.appendChild(postLinkContent);
+  postLinkContent.innerHTML = '<i class="fas fa-external-link-alt"></i> Afficher ce post uniquement';
+
+  let postPageLocation = `frontend/html/post.html`,
+    urlToPostPage;
+  if (window.location.origin !== "null") {
+    urlToPostPage = `${window.location.origin}/${postPageLocation}?id=${post.id}`;
+  } else {
+    urlToPostPage = `${window.location.href.split("/frontend/html")[0]}/${postPageLocation}?id=${post.id}`;
+  }
+  postLink.setAttribute("href", urlToPostPage);
+  postLink.classList.add("post-linkto");
+}
+
+function displayModifyButton(elementType, targetElement) {
+  let button = document.createElement("button");
+  button.innerHTML = '<i class="fas fa-edit"></i></i> Modifier';
+  if (elementType === "post") {
+    button.addEventListener("click", modifyPost);
+    button.classList.add("modify-post");
+  } else if (elementType === "comment") {
+    button.addEventListener("click", modifyComment);
+    button.classList.add("modify-comment");
+  }
+  targetElement.appendChild(button);
+}
+
+function displayDeleteButton(elementType, targetElement) {
+  let button = document.createElement("button");
+  button.innerHTML = '<i class="fas fa-trash-alt"></i> Supprimer';
+  if (elementType === "post") {
+    button.addEventListener("click", deletePost);
+    button.classList.add("delete-post");
+  } else if (elementType === "comment") {
+    button.addEventListener("click", deleteComment);
+    button.classList.add("delete-comment");
+
+  }
+  targetElement.appendChild(button);
+}
+
 function initializeTheHomeAndPostsPages() {
   if (DEBUG) console.log(`initializeTheHomeAndPostsPages();`)
   if (userLocation === "home.html") {

@@ -6,7 +6,7 @@ function getProfile() {
   let request = getTheApiRequest(null, "GET", "application/json");
   if (DEBUG) console.log(`Envoi de la requête :`, request);
 
-  fetch(`http://localhost:3000/user/profile/${urlParameterUserId}`, request)
+  fetch(`http://localhost:${PORT}/user/profile/${urlParameterUserId}`, request)
     .then(result => result.json())
     .then(data => {
       canTheUserAccessThisPage(data.userIsConnected);
@@ -48,6 +48,17 @@ function displayAdminStatus(userProfile) {
 }
 
 function modifyProfile() {
+
+  // let form = document.querySelector("form");
+  // const formData = new FormData(form);
+  // let body = {};
+
+  // for (var pair of formData.entries()) {
+  //   body[pair[0]] = pair[1];
+  // }
+
+  // body.picture = picture;
+
   if (DEBUG) console.group(`Modification du profil de l'utilisateur.`);
   let firstname = document.querySelector("#firstname").value,
     lastname = document.querySelector("#lastname").value,
@@ -55,41 +66,32 @@ function modifyProfile() {
     position = document.querySelector("#position").value,
     phone = document.querySelector("#phone").value;
 
-  let picture = document.querySelector("#profil-picture").files[0]
+  let picture = document.querySelector("#picture").value;
 
-  // let body = {
-  //   firstname: firstname,
-  //   lastname: lastname,
-  //   email: email,
-  //   picture: picture,
-  //   position: position,
-  //   phone: phone
-  // }
-
-  let form = document.querySelector("form");
-  const formData = new FormData(form);
-  let body = {};
-
-  for (var pair of formData.entries()) {
-    body[pair[0]] = pair[1];
+  let body = {
+    firstname: firstname,
+    lastname: lastname,
+    email: email,
+    picture: picture,
+    position: position,
+    phone: phone
   }
 
-  body.picture = picture;
 
   console.log(body);
 
   let request = getTheApiRequest(body, "PUT", "application/json");
   if (DEBUG) console.log(`Envoi de la requête :`, request);
 
-  // fetch(`http://localhost:3000/user/profile/${urlParameterUserId}`, request)
-  //   .then(result => result.json())
-  //   .then(data => data.result)
-  //   .then(userProfile => {
-  //     if (DEBUG) console.log(`Profil modifié !`);
-  //     if (DEBUG) console.groupEnd();
-  //     // Réactualiser les données de la page
-  //     window.location.reload();
-  //   });
+  fetch(`http://localhost:${PORT}/user/profile/${urlParameterUserId}`, request)
+    .then(result => result.json())
+    .then(data => data.result)
+    .then(userProfile => {
+      if (DEBUG) console.log(`Profil modifié !`);
+      if (DEBUG) console.groupEnd();
+      // Réactualiser les données de la page
+      window.location.reload();
+    });
 }
 
 function deleteProfile() {
@@ -99,7 +101,7 @@ function deleteProfile() {
     let request = getTheApiRequest(null, "DELETE", "application/json");
     if (DEBUG) console.log(`Envoi de la requête :`, request);
 
-    fetch(`http://localhost:3000/user/profile/${urlParameterUserId}`, request)
+    fetch(`http://localhost:${PORT}/user/profile/${urlParameterUserId}`, request)
       .then(result => {
         if (DEBUG) console.log(`Compte supprimé !`);
         logOut();

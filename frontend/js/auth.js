@@ -9,7 +9,7 @@ function login() {
     password: password
   }, "POST", "application/json");
 
-  fetch(`http://localhost:3000/auth/login`, request)
+  fetch(`http://localhost:${PORT}/auth/login`, request)
     .then(result => {
       if (DEBUG) console.log(result);
       if (DEBUG) console.group(`Lancement de la procédure de connexion ...`);
@@ -69,7 +69,7 @@ function signup() {
       password: firstPassword
     }, "POST", "application/json");
 
-    fetch(`http://localhost:3000/auth/signup`, request)
+    fetch(`http://localhost:${PORT}/auth/signup`, request)
       .then(result => {
         if (DEBUG) console.group(`Lancement de la procédure d'inscription ...`);
         if (DEBUG) console.log(`Récupération des inputs dans le front :`, `\n`, `email : ${email}`, `\n`, `mot de passe 1 : ${firstPassword}`, `\n`, `mot de passe 2 : ${secondPassword}`);
