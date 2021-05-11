@@ -20,26 +20,37 @@ function createPost() {
 }
 
 function modifyPost() {
-  let postId = this.closest("*[data-id]").dataset.id,
-    oldPost = document.querySelector(`*[data-id="${postId}"] .post-text`).textContent,
-    newPost = prompt(`Modifier le post`, oldPost),
-    body = {
-      text: newPost,
-      post_id: postId
-    },
-    request = getTheApiRequest(body, "PUT", "application/json");
+  let post = this.closest("*[data-id]"),
+    postId = post.dataset.id;
+  
+  if (document.querySelector(`*[data-id="${postId}"] .post-text-edit`) === null) {
+    let oldPostElement = document.querySelector(`*[data-id="${postId}"] .post-text`),
+      newPostElement = document.createElement(`textarea`);
 
-  fetch(`http://localhost:${PORT}/posts/${postId}`, request)
-    .then(result => result.json())
-    .then(data => data.result[0])
-    .then(comment => {
-      if (DEBUG) console.group(`Modification d'un post.`);
-      if (DEBUG) console.log(`Requête envoyée :`, request);
-      if (DEBUG) console.log(`Post modifié !`);
-      if (DEBUG) console.log(`Réactualisation de la page.`);
-      if (DEBUG) console.groupEnd();
-      window.location.reload();
-    })
+    newPostElement.classList.add("post-text-edit");
+    newPostElement.value = oldPostElement.textContent;
+    post.replaceChild(newPostElement, oldPostElement);
+
+  } else {
+    let newPost = document.querySelector(`*[data-id="${postId}"] textarea`).value,
+      body = {
+        text: newPost,
+        post_id: postId
+      },
+      request = getTheApiRequest(body, "PUT", "application/json");
+
+    fetch(`http://localhost:${PORT}/posts/${postId}`, request)
+      .then(result => result.json())
+      .then(data => data.result[0])
+      .then(comment => {
+        if (DEBUG) console.group(`Modification d'un post.`);
+        if (DEBUG) console.log(`Requête envoyée :`, request);
+        if (DEBUG) console.log(`Post modifié !`);
+        if (DEBUG) console.log(`Réactualisation de la page.`);
+        if (DEBUG) console.groupEnd();
+        window.location.reload();
+      })
+  }
 }
 
 function deletePost() {
@@ -151,8 +162,6 @@ function displayOnePost(post) {
   postContainer.appendChild(createCommentContainer);
   getStuffToCreateComment(createCommentContainer);
 }
-
-
 
 function initializeTheHomeAndPostsPages() {
   if (userLocation === "home.html") {

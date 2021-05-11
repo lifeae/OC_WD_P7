@@ -87,25 +87,37 @@ function createComment() {
 }
 
 function modifyComment() {
-  let commentId = this.closest("*[data-id]").dataset.id,
-    oldComment = document.querySelector(`*[data-id="${commentId}"] .comment-text`).textContent,
-    newComment = prompt("Modifier le commentaire", oldComment);
-  let body = {
-    text: newComment
-  };
-  let request = getTheApiRequest(body, "PUT", "application/json");
 
-  fetch(`http://localhost:${PORT}/comments/${commentId}`, request)
-    .then(result => result.json())
-    .then(data => data.result[0])
-    .then(comment => {
-      if (DEBUG) console.group(`Modification d'un commentaire.`);
-      if (DEBUG) console.log(`Requête envoyée :`, request);
-      if (DEBUG) console.log(`Commentaire crée !`, comment);
-      if (DEBUG) console.log(`Réactualisation de la page.`);
-      if (DEBUG) console.groupEnd();
-      window.location.reload();
-    })
+  let comment = this.closest("*[data-id]"),
+    commentId = comment.dataset.id;
+
+  if (document.querySelector(`*[data-id="${commentId}"] .comment-text-edit`) === null) {
+    let oldCommentElement = document.querySelector(`*[data-id="${commentId}"] .comment-text`),
+      newCommentElement = document.createElement(`textarea`);
+
+    newCommentElement.classList.add("comment-text-edit");
+    newCommentElement.value = oldCommentElement.textContent;
+    comment.replaceChild(newCommentElement, oldCommentElement);
+
+  } else {
+    let newComment = document.querySelector(`*[data-id="${commentId}"] textarea`).value,
+      body = {
+        text: newComment
+      };
+    let request = getTheApiRequest(body, "PUT", "application/json");
+
+    fetch(`http://localhost:${PORT}/comments/${commentId}`, request)
+      .then(result => result.json())
+      .then(data => data.result[0])
+      .then(comment => {
+        if (DEBUG) console.group(`Modification d'un commentaire.`);
+        if (DEBUG) console.log(`Requête envoyée :`, request);
+        if (DEBUG) console.log(`Commentaire crée !`, comment);
+        if (DEBUG) console.log(`Réactualisation de la page.`);
+        if (DEBUG) console.groupEnd();
+        window.location.reload();
+      })
+  }
 }
 
 function deleteComment() {
