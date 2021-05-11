@@ -1,5 +1,23 @@
 let urlParameterUserId = getUrlParameters("id");
 
+/**
+ * L'utilisateur est propriétaire ou admin
+ *  → Afficher le formulaire de modification et de suppression
+ * L'utilisateur n'est pas propriétaire ou admin
+ *  → Afficher une présentation du profil sans modifications possibles
+ */
+
+function whatToDisplayDependingOnTheUserRightsOnThisProfile(userId, userIsAdmin) {
+  let userIsOwnerOfThisElement = (urlParameterUserId == userId ? true : false);
+  if (userIsOwnerOfThisElement || userIsAdmin) {
+    if (DEBUG) console.log(`L'utisateur est propriétaire ou administrateur.`, `\n`, `Affichage du formulaire de modification/suppression.`);
+    document.querySelector(".user-has-no-rights").style.display = "none";
+  } else {
+    if (DEBUG) console.log(`L'utisateur n'est pas propriétaire ou administrateur.`, `\n`, `Affichage du profil sans modifications possibles.`);
+    document.querySelector(".user-has-rights").style.display = "none";
+  }
+}
+
 function getProfile() {
   if (DEBUG) console.group(`Récupération du profil : `);
 
@@ -11,7 +29,7 @@ function getProfile() {
     .then(data => {
       canTheUserAccessThisPage(data.userIsConnected);
       // l'utilisateur est propriétaire ou admin ? On lui présente les boutons de modification et de suppression
-      displayModifyAndDeleteButtons(data.userId, data.userIsAdmin);
+      whatToDisplayDependingOnTheUserRightsOnThisProfile(data.userId, data.userIsAdmin)
       return data.result[0];
     })
     .then(userProfile => {
@@ -23,19 +41,34 @@ function getProfile() {
 }
 
 function displayProfile(userProfile) {
-  // Récupérer les différents champs dans le fichier html
-  let firstname = document.querySelector("#firstname"),
-    lastname = document.querySelector("#lastname"),
-    email = document.querySelector("#email"),
-    position = document.querySelector("#position"),
-    phone = document.querySelector("#phone");
+  let title = document.querySelector("h1");
+  title.innerHTML = `Profil de ${userProfile.firstname} ${userProfile.lastname}`;
 
-  // Les remplir
-  firstname.value = userProfile.firstname;
-  lastname.value = userProfile.lastname;
-  email.value = userProfile.email;
-  position.value = userProfile.position;
-  phone.value = userProfile.phone;
+  if (document.querySelector(".user-has-no-rights").style.display === 'none') {
+    // L'utilisateur a les droits
+    let firstname = document.querySelector("#firstname"),
+      lastname = document.querySelector("#lastname"),
+      email = document.querySelector("#email"),
+      position = document.querySelector("#position"),
+      phone = document.querySelector("#phone");
+
+    firstname.value = userProfile.firstname;
+    lastname.value = userProfile.lastname;
+    email.value = userProfile.email;
+    position.value = userProfile.position;
+    phone.value = userProfile.phone;
+  } else {
+    // L'utilisateur n'a pas les droits
+    let email = document.querySelector(".email"),
+      position = document.querySelector(".position"),
+      phone = document.querySelector(".phone");
+
+    email.innerHTML = userProfile.email;
+    email.href = `mailto:${userProfile.email}`;
+    position.innerHTML = userProfile.position;
+    phone.innerHTML = userProfile.phone;
+    phone.href = `tel:${userProfile.phone}`;
+  }
 }
 
 function displayAdminStatus(userProfile) {
@@ -107,17 +140,6 @@ function deleteProfile() {
         logOut();
         if (DEBUG) console.groupEnd();
       });
-  }
-}
-
-function displayModifyAndDeleteButtons(userId, userIsAdmin) {
-  let userIsOwnerOfThisElement = (urlParameterUserId == userId ? true : false);
-  if (userIsOwnerOfThisElement || userIsAdmin) {
-    if (DEBUG) console.log(`L'utisateur est propriétaire ou administrateur.`, `\n`, `Boutons de modification et suppression affichés.`);
-  } else {
-    if (DEBUG) console.log(`L'utisateur n'est pas propriétaire ou administrateur.`, `\n`, `Boutons de modification et suppression cachés.`);
-    document.querySelector(".modify-profile").style.display = "none";
-    document.querySelector(".delete-profile").style.display = "none";
   }
 }
 
