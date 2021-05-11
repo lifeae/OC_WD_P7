@@ -1,10 +1,12 @@
-let userIsConnected, userIsAdmin, userId;
-
-
 function redirectToHomePage() {
   if (DEBUG) console.log(`Redirection vers la page d'accueil.`);
   let homePageLocation = `frontend/html/home.html`,
-    urlToHomePage = `${window.location.origin}/${homePageLocation}`;
+    urlToHomePage;
+  if (window.location.origin !== "null") {
+    urlToHomePage = `${window.location.origin}/${homePageLocation}`
+  } else {
+    urlToHomePage = `${window.location.href.split("/frontend/html")[0]}/${homePageLocation}`;
+  }
   window.location.replace(urlToHomePage);
 }
 
@@ -175,7 +177,7 @@ function displayOnePost(post) {
   displayDateTimeToTheElement(post, "post", postInformations);
   displayTextToTheElement(post, "post", postContainer);
 
-  if (window.location.pathname.split("/")[3] === "home.html") {
+  if (userLocation === "home.html") {
     displayLinkToThePost(post, buttonsContainer);
   };
 
@@ -183,7 +185,7 @@ function displayOnePost(post) {
     displayModifyButton("post", buttonsContainer);
     displayDeleteButton("post", buttonsContainer);
   }
-  
+
   postContainer.appendChild(buttonsContainer);
   postContainer.appendChild(commentsContainer);
   commentsContainer.appendChild(commentsContainerTitle);
@@ -216,7 +218,13 @@ function displayDateTimeToTheElement(element, elementType, elementContainer) {
 function displayUserInformationsToTheElement(element, targetElement) {
   // Créer un lien vers le profil de l'auteur
   let profilePageLocation = `frontend/html/profile.html`,
+    urlToUserProfilePage;
+
+  if (window.location.origin !== "null") {
     urlToUserProfilePage = `${window.location.origin}/${profilePageLocation}?id=${element.id_user}`;
+  } else {
+    urlToUserProfilePage = `${window.location.href.split("/frontend/html")[0]}/${profilePageLocation}?id=${element.id_user}`;
+  }
 
   targetElement.classList.add("owner-informations");
   targetElement.innerHTML = `${element.firstname} ${element.lastname}`;
@@ -229,8 +237,14 @@ function displayLinkToThePost(post, targetElement) {
   targetElement.appendChild(postLink);
   postLink.appendChild(postLinkContent);
   postLinkContent.innerHTML = '<i class="fas fa-external-link-alt"></i> Afficher ce post uniquement';
-  let homePageLocation = `frontend/html/post.html`,
-    urlToPostPage = `${window.location.origin}/${homePageLocation}?id=${post.id}`;
+
+  let postPageLocation = `frontend/html/post.html`,
+    urlToPostPage;
+  if (window.location.origin !== "null") {
+    urlToPostPage = `${window.location.origin}/${postPageLocation}?id=${post.id}`;
+  } else {
+    urlToPostPage = `${window.location.href.split("/frontend/html")[0]}/${postPageLocation}?id=${post.id}`;
+  }
   postLink.setAttribute("href", urlToPostPage);
   postLink.classList.add("post-linkto");
 }
@@ -420,7 +434,13 @@ function logOut() {
 
 function addLinkToUserConnectedProfile(userId) {
   let profilePageLocation = `frontend/html/profile.html`,
+    urlToUserProfilePage;
+
+  if (window.location.origin !== "null") {
     urlToUserProfilePage = `${window.location.origin}/${profilePageLocation}?id=${userId}`;
+  } else {
+    urlToUserProfilePage = `${window.location.href.split("/frontend/html")[0]}/${profilePageLocation}?id=${userId}`;
+  }
   document.querySelector("#my-profile").setAttribute("href", urlToUserProfilePage);
 }
 
@@ -431,4 +451,5 @@ function canTheUserAccessThisPage(userIsConnected) {
   }
 }
 
-let userLocation = window.location.pathname.split("/")[3];
+let userIsConnected, userIsAdmin, userId,
+  userLocation = window.location.pathname.split("html/")[1];

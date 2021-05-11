@@ -78,18 +78,18 @@ function modifyProfile() {
 
   console.log(body);
 
-  let request = getTheApiRequest(body, "PUT", "multipart/form-data; boundary=yolo");
+  let request = getTheApiRequest(body, "PUT", "application/json");
   if (DEBUG) console.log(`Envoi de la requête :`, request);
 
-  fetch(`http://localhost:3000/user/profile/${urlParameterUserId}`, request)
-    .then(result => result.json())
-    .then(data => data.result)
-    .then(userProfile => {
-      if (DEBUG) console.log(`Profil modifié !`);
-      if (DEBUG) console.groupEnd();
-      // Réactualiser les données de la page
-      window.location.reload();
-    });
+  // fetch(`http://localhost:3000/user/profile/${urlParameterUserId}`, request)
+  //   .then(result => result.json())
+  //   .then(data => data.result)
+  //   .then(userProfile => {
+  //     if (DEBUG) console.log(`Profil modifié !`);
+  //     if (DEBUG) console.groupEnd();
+  //     // Réactualiser les données de la page
+  //     window.location.reload();
+  //   });
 }
 
 function deleteProfile() {

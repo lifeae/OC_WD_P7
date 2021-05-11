@@ -3,13 +3,19 @@
 ### Livrables
 *  Le lien du repo GitHub contenant le code de l’application.
 
-## Prérecquis
- - NodeJs
- - MySQL
+# Installation
+
+## Téléchargement du repo
+ - Se placer dans un dossier qui vous convient avec le terminal
+ - `git clone https://github.com/lifeae/OC_WD_P7.git`
+ - `cd OC_WD_P7`
+## BDD
+ - Démarrer le serveur de la base de données (WampServer dans mon cas)
+ - Importer le schéma de la base de données (via Phpmyadmin dans mon cas)
 ## Backend
-Démarrer le serveur de la base de données (WampServer dans mon cas)
-Installer les modules nécessaires : `npm install`
-Démarrer le serveur : `nodemon server`
+ - `cd backend`
+ - Installer les modules nécessaires : `npm install`
+ - Démarrer le serveur : `nodemon server`
 
 ## Frontend
-Ouvrez le fichier home.html
+ - Ouvrez le fichier home.html avec votre navigateur préféré.

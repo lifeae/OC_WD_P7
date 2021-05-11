@@ -1,4 +1,5 @@
 function initializeTheHomeAndPostsPages() {
+  if (DEBUG) console.log(`initializeTheHomeAndPostsPages();`)
   if (userLocation === "home.html") {
     if (DEBUG) console.log(`L'utilisateur est sur la page d'accueil.`)
     if (sessionStorage.getItem("token") === null) {
