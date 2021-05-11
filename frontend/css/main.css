@@ -1,7 +1,4 @@
 body {
-  color: #ffffff;
-  background-color: #000000;
-  font-family: "Lato";
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -9,35 +6,23 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  font-family: "Lato";
   text-align: center;
-}
-
-svg {
-  display: block;
+  color: #333333;
+  max-width: 1000px;
   margin: auto;
-  margin-bottom: 30px;
-  margin-top: 30px;
 }
 
-button {
-  padding: 1rem 2rem 1rem 2rem;
-  margin: 20px auto;
-  font-size: 1rem;
-  color: #ffffff;
-  background-color: transparent;
-  border: 2px solid #ffffff;
+img {
+  max-width: 100%;
+  max-height: 100%;
 }
 
-button:hover {
-  padding: 1rem 2rem 1rem 2rem;
-  margin: 20px auto;
-  color: #000000;
-  background-color: #ffffff;
-  border: 2px solid #ffffff;
-}
-
-button:focus {
-  border: 3px solid #ffffff;
+nav {
+  margin-bottom: 50px;
+  text-align: right;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 label {
@@ -45,28 +30,105 @@ label {
   margin: 10px;
 }
 
+i {
+  margin-right: 10px;
+}
+
+.error {
+  color: #FD2D01;
+  font-weight: bold;
+}
+
+.user-informations {
+  margin-bottom: 20px;
+}
+
+#posts-container, .post, .comment, #new-post-container, .new-comment-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#posts-container {
+  background-color: #F8F8F8;
+}
+
+#posts-container .post {
+  background-color: #e7e7e7;
+}
+
+#posts-container, #new-post-container, .post {
+  margin: 10px;
+  border: 2px solid #333333;
+}
+
+.comment, .new-comment-container {
+  margin: 3px 20px;
+  border: 1px solid #333333;
+}
+
+#new-post-container {
+  margin-bottom: 50px;
+}
+
+.post-informations, .comment-informations {
+  margin: 20px;
+}
+
+.post-informations .owner-informations, .comment-informations .owner-informations {
+  text-decoration: none;
+  font-weight: bold;
+  color: #333333;
+}
+
+.post-informations p, .comment-informations p {
+  margin: 0 5px;
+}
+
+.post-text, .comment-text {
+  margin: 20px 50px;
+  text-align: justify;
+}
+
+label {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+textarea {
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid #333333;
+  font-family: "Lato";
+}
+
 input {
+  border: 1px solid #333333;
+  font-family: "Lato";
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
-  background-color: transparent;
-  color: #ffffff;
-  border: 2px solid #ffffff;
+  width: 200px;
 }
 
-input:focus {
-  border: 3px solid #ffffff;
+button {
+  margin: 5px 10px;
+  padding: 10px 20px 10px 20px;
+  background-color: #FD2D01;
+  border: 1px solid #333333;
+  color: #F8F8F8;
+  font-weight: bold;
+  font-size: 1rem;
 }
 
-hr {
-  color: #ffffff;
-}
-
-.post {
-  border: 2px solid #ffffff;
-  margin: 5px 50px;
-}
-
-.comment {
-  border: 2px solid #ffffff;
-  margin: 5px 50px;
+button:hover, button:focus {
+  margin: 5px 10px;
+  padding: 10px 20px 10px 20px;
+  border: 1px solid #333333;
+  background-color: #222222;
+  color: #F8F8F8;
+  font-weight: bold;
 }
 /*# sourceMappingURL=main.css.map */

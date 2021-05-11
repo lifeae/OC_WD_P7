@@ -3,33 +3,41 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Grouporama - Home</title>
+  <title>Groupomania - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="../images/icon.png" />
   <link href="../css/main.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
   <script src="../js/debug.js"></script>
   <script src="../js/library.js"></script>
-  <script src="../js/home.js" defer></script>
   <script src="../js/posts.js" defer></script>
 </head>
 
 <body>
-  <a href="./home.html"><h1>Grouporama</h1></a>
-  <h2>Réseau social interne</h2>
+  <a href="./home.html">
+    <img id="logo" src="../images/icon-left-font.png" alt="logo de Groupomania">
+  </a>
   <!-- Une partie utilisateur connecté avec la liste des posts -->
-  <div class='user-is-connected'>
-    <button onclick="logOut()">Se déconnecter</button>
-    <button onclick="goToUserProfile()">Profil</button>
-    <div id='posts-container'>
-      <p>Actualités</p>
+  <div class="user-is-connected">
+    <nav>
+      <a id="my-profile"><button><i class="fas fa-user"></i> Mon profil</button></a>
+      <button id="logout" onclick="logOut()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+    </nav>
+    <section id="new-post-container">
       <label for="new-post">Quoi de neuf ?</label>
-      <input type="text" id="new-post" placeholder="Ecrivez un nouveau post ...">
-      <button type="submit" onclick="createPost()">Envoyer</button>
-    </div>
+      <textarea type="text" id="new-post" placeholder="Ecrivez un nouveau post ..."></textarea>
+      <button type="submit" onclick="createPost()"><i class="fas fa-paper-plane"></i> Envoyer</button>
+    </section>
+    <section id="posts-container">
+      <h1>Derniers posts</h1>
+      <!-- Les posts seront insérés ici -->
+    </section>
   </div>
   <!-- Une partie utilisateur déconnecté avec les boutons pour se connecter ou s'inscrire -->
-  <div class='user-is-disconnected'>
+  <div class="user-is-disconnected">
+    <h1>Réseau social interne de Groupomania</h1>
     <a href="./login.html"><button>Se connecter</button></a>
     <a href="./signup.html"><button>S'inscrire</button></a>
   </div>

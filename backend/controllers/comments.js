@@ -7,20 +7,20 @@ exports.getOneComment = (req, res, next) => {
   })
 };
 
-exports.getComments = (req, res, next) => {
-  commentMdl.getComments(req.params.id)
+exports.getAllComments = (req, res, next) => {
+  commentMdl.getAllComments(req.params.id)
   .then(result => {
     res.status(200).json({result: result});
   })
 };
 
 exports.createComment = (req, res, next) => {
-  commentMdl.createComment(req.user, req.body.text, req.body.id_post)
+  commentMdl.createComment(req.userId, req.body.text, req.body.id_post)
   .then(result => { res.status(200).json({result: result}) });
 };
 
 exports.modifyComment = (req, res, next) => {
-  commentMdl.modifyComment(req.body.text, req.body.comment_id)
+  commentMdl.modifyComment(req.params.id, req.body.text)
   .then(result => { res.status(200).json({result: result}) });
 };
 

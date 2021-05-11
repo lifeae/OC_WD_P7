@@ -7,12 +7,18 @@ const dbConnection = require('../dbConnection');
 exports.getAllPosts = (req, res, next) => {
   postMdl.getAllPosts()
     .then(result => {
-      res.status(200).json({ result: result });
+      res.status(200).json({
+        result: result,
+        userId: req.userId,
+        userIsConnected: req.userIsConnected,
+        userIsAdmin: req.userIsAdmin,
+        userIsOwner: req.userIsOwner
+      });
     })
 };
 
 exports.createPost = (req, res, next) => {
-  postMdl.createPost(req.user, req.body.text)
+  postMdl.createPost(req.userId, req.body.text)
     .then(result => {
       res.status(200).json({ result: result });
     })
@@ -21,7 +27,13 @@ exports.createPost = (req, res, next) => {
 exports.getOnePost = (req, res, next) => {
   postMdl.getOnePost(req.params.id)
     .then(result => {
-      res.status(200).json({ result: result });
+      res.status(200).json({
+        result: result,
+        userId: req.userId,
+        userIsConnected: req.userIsConnected,
+        userIsAdmin: req.userIsAdmin,
+        userIsOwner: req.userIsOwner
+      });
     })
 };
 
@@ -40,14 +52,14 @@ exports.deletePost = (req, res, next) => {
 };
 
 exports.reactToPost = (req, res, next) => {
-  let isUserAlreadyReacted = (postMdl.isUserAlreadyReacted(req.user, req.params.id));
+  let isUserAlreadyReacted = (postMdl.isUserAlreadyReacted(req.userId, req.params.id));
   if (isUserAlreadyReacted) {
-    postMdl.modifyReaction(req.body.reaction, req.user, req.params.id)
+    postMdl.modifyReaction(req.body.reaction, req.userId, req.params.id)
       .then(result => {
         res.status(200).json({ result: result });
       })
   } else {
-    postMdl.createReaction(req.body.reaction, req.user, req.params.id)
+    postMdl.createReaction(req.body.reaction, req.userId, req.params.id)
       .then(result => {
         res.status(200).json({ result: result });
       })
