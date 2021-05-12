@@ -16,6 +16,5 @@
  - `cd backend`
  - Installer les modules nécessaires : `npm install`
  - Démarrer le serveur : `nodemon server`
-
 ## Frontend
  - Ouvrez le fichier home.html avec votre navigateur préféré.
