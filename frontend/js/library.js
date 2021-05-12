@@ -1,3 +1,15 @@
+function displayErrorMessage(error) {
+  let previousErrorMessage = document.querySelector(".error");
+  if (previousErrorMessage !== null) {
+    previousErrorMessage.remove();
+  }
+  let errorMessage = document.createElement("p"),
+    form = document.querySelector("#form");
+  errorMessage.textContent = error;
+  errorMessage.classList.add("error");
+  form.appendChild(errorMessage);
+}
+
 function redirectToHomePage() {
   if (DEBUG) console.log(`Redirection vers la page d'accueil.`);
   let homePageLocation = `frontend/html/home.html`,

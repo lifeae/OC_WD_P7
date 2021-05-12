@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `password`, `picture`, `position`, `phone`, `is_admin`) VALUES
-(1, 'Romainou', 'Leporatti', 'romain.leporatti@gmail.com', '$2b$10$bSvdliZ27Mz6Q6KXr6mxAeMcUrG0WPrUs3u/ttYSqyUtPRyuF00cq', '', 'Développeur', '+33620801356', 1);
+(1, 'Romain', 'Leporatti', 'romain.leporatti@gmail.com', '$2b$10$bSvdliZ27Mz6Q6KXr6mxAeMcUrG0WPrUs3u/ttYSqyUtPRyuF00cq', '', 'Développeur', '+33620801356', 1);
 
 --
 -- Contraintes pour les tables déchargées

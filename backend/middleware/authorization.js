@@ -22,7 +22,7 @@ module.exports = (req, res, next) => {
         req.userIsOwner = true;
         if (DEBUG) console.log(`L'utilisateur est propriétaire de ce profil. Il peut le modifier.`);
         if (DEBUG) console.log(`Sortie du middleware d'autorisation.`);
-        next();
+        return next();
       }
       break;
     case 'posts': // du post qu'il souhaite modifier ?
@@ -35,7 +35,7 @@ module.exports = (req, res, next) => {
             req.userIsOwner = true;
             if (DEBUG) console.log(`L'utilisateur est propriétaire de ce post. Il peut le modifier.`);
             if (DEBUG) console.log(`Sortie du middleware d'autorisation.`);
-            next();
+            return next();
           }
         })
       break;
@@ -49,7 +49,7 @@ module.exports = (req, res, next) => {
             req.userIsOwner = true;
             if (DEBUG) console.log(`L'utilisateur est propriétaire de ce commentaire. Il peut le modifier.`);
             if (DEBUG) console.log(`Sortie du middleware d'autorisation.`);
-            next();
+            return next();
           }
         })
       break;

@@ -7,18 +7,21 @@ exports.signup = (req, res, next) => {
       passwordRegex = `^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$`;
       // Minimum eight characters, at least one letter in lowercase, one letter in uppercase, one number, one special character
   if (!req.body.email.match(emailRegex)) {
-    res.status(400).json({ error: `Le champ email n'est pas correct !` });
+    return res.status(400).json({ error: `Le champ email n'est pas correct !` });
   }
-  if (!req.body.password.match(passwordRegex)) {
-    res.status(400).json({ error: `Le mot de passe n'est pas suffisant ! Utilisez au minimum : 8 caractères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre, 1 caractères spécial.` });
+  if (req.body.firstPassword !== req.body.secondPassword) {
+    return res.status(400).json({ error: `Les mots de passe ne sont pas identiques !` });
   }
-  if (req.body.email.match(emailRegex) && req.body.password.match(passwordRegex)) {
+  if (!req.body.firstPassword.match(passwordRegex)) {
+    return res.status(400).json({ error: `Le mot de passe n'est pas suffisant ! Utilisez au minimum : 8 caractères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre, 1 caractères spécial.` });
+  }
+  if (req.body.email.match(emailRegex) && req.body.firstPassword.match(passwordRegex)) {
     authentificationMdl.isEmailIsAlreadyUsed(req.body.email)
       .then(result => {
         if (result) {
           res.status(400).json({ error: 'Cet email est déjà utilisé !' });
         } else {
-          bcrypt.hash(req.body.password, 10)
+          bcrypt.hash(req.body.firstPassword, 10)
             .then(hash => {
               authentificationMdl.signup(req.body.email, hash)
                 .then(result => {

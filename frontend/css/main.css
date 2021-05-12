@@ -36,6 +36,59 @@ i {
   margin-right: 10px;
 }
 
+textarea {
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid #333333;
+  font-family: "Lato";
+}
+
+input {
+  border: 1px solid #333333;
+  font-family: "Lato";
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  width: 200px;
+}
+
+button {
+  margin: 5px 10px;
+  padding: 10px 20px 10px 20px;
+  background-color: #FD2D01;
+  border: 1px solid #333333;
+  color: #F8F8F8;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+button:hover, button:focus {
+  margin: 5px 10px;
+  padding: 10px 20px 10px 20px;
+  border: 1px solid #333333;
+  background-color: #222222;
+  color: #F8F8F8;
+  font-weight: bold;
+}
+
+input[type='file'] {
+  max-width: 400px;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
+form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
 .error {
   color: #FD2D01;
   font-weight: bold;
@@ -96,39 +149,6 @@ i {
   text-align: justify;
 }
 
-textarea {
-  margin: 10px;
-  padding: 20px;
-  border: 1px solid #333333;
-  font-family: "Lato";
-}
-
-input {
-  border: 1px solid #333333;
-  font-family: "Lato";
-  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
-  width: 200px;
-}
-
-button {
-  margin: 5px 10px;
-  padding: 10px 20px 10px 20px;
-  background-color: #FD2D01;
-  border: 1px solid #333333;
-  color: #F8F8F8;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-button:hover, button:focus {
-  margin: 5px 10px;
-  padding: 10px 20px 10px 20px;
-  border: 1px solid #333333;
-  background-color: #222222;
-  color: #F8F8F8;
-  font-weight: bold;
-}
-
 .picture {
   width: 50%;
 }
@@ -152,25 +172,5 @@ button:hover, button:focus {
 
 #new-post-illustration {
   margin: auto;
-}
-
-input[type='file'] {
-  max-width: 400px;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-}
-
-form {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 /*# sourceMappingURL=main.css.map */
