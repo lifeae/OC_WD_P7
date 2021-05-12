@@ -14,6 +14,7 @@
  - Importer le schéma de la base de données (via Phpmyadmin dans mon cas)
 ## Backend
  - `cd backend`
+ - Créer un dossier "images"
  - Installer les modules nécessaires : `npm install`
  - Démarrer le serveur : `nodemon server`
 ## Frontend
