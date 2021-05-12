@@ -1,11 +1,22 @@
 function createPost() {
-  let text = document.querySelector("#new-post"),
-    body = {
-      text: text.value
-    };
 
-  text.value = ``;
-  request = getTheApiRequest(body, "POST", "application/json");
+  let text = document.querySelector("#new-post"),
+    illustration = document.querySelector("#new-post-illustration");
+
+  const formData = new FormData();
+  formData.append("text", text.value);
+  formData.append("picture", illustration.files[0]);
+
+
+  let request = {
+    method: "POST",
+    headers: {
+      "Accept": "application/json, text/plain, multipart/form-data, */*",
+      "Authorization": `Bearer ${sessionStorage.getItem("token")}` // ne cause pas l'échec de la requête même si aucun token n'est enregistré
+    },
+    body: formData
+  }
+
   fetch(`http://localhost:${PORT}/posts`, request)
     .then(result => result.json())
     .then(data => data.result)
@@ -22,22 +33,41 @@ function createPost() {
 function modifyPost() {
   let post = this.closest("*[data-id]"),
     postId = post.dataset.id;
-  
+
   if (document.querySelector(`*[data-id="${postId}"] .post-text-edit`) === null) {
-    let oldPostElement = document.querySelector(`*[data-id="${postId}"] .post-text`),
-      newPostElement = document.createElement(`textarea`);
+    let oldTextElement = document.querySelector(`*[data-id="${postId}"] .post-text`),
+      form = document.createElement(`form`),
+      newTextElement = document.createElement(`textarea`),
+      newInputElement = document.createElement(`input`);
 
-    newPostElement.classList.add("post-text-edit");
-    newPostElement.value = oldPostElement.textContent;
-    post.replaceChild(newPostElement, oldPostElement);
+    newInputElement.classList.add("post-illustration-edit");
+    newInputElement.setAttribute("type", "file");
+    newInputElement.setAttribute("name", "picture");
+    form.setAttribute("name", "form");
+    form.setAttribute("id", "form");
+    form.setAttribute("enctype", "multipart/form-data");
 
+    newTextElement.classList.add("post-text-edit");
+    newTextElement.value = oldTextElement.textContent;
+    post.replaceChild(form, oldTextElement);
+    form.appendChild(newTextElement);
+    form.appendChild(newInputElement)
   } else {
-    let newPost = document.querySelector(`*[data-id="${postId}"] textarea`).value,
-      body = {
-        text: newPost,
-        post_id: postId
+    let text = document.querySelector(`*[data-id="${postId}"] textarea`).value,
+      illustration = document.querySelector(`*[data-id="${postId}"] input`),
+      formData = new FormData();
+
+    formData.append("text", text);
+    formData.append("picture", illustration.files[0]);
+
+    let request = {
+      method: "PUT",
+      headers: {
+        "Accept": "application/json, text/plain, multipart/form-data, */*",
+        "Authorization": `Bearer ${sessionStorage.getItem("token")}` // ne cause pas l'échec de la requête même si aucun token n'est enregistré
       },
-      request = getTheApiRequest(body, "PUT", "application/json");
+      body: formData
+    }
 
     fetch(`http://localhost:${PORT}/posts/${postId}`, request)
       .then(result => result.json())
@@ -65,9 +95,14 @@ function deletePost() {
       if (DEBUG) console.group(`Suppression d'un post.`);
       if (DEBUG) console.log(`Requête envoyée :`, request);
       if (DEBUG) console.log(`Post supprimé !`);
-      if (DEBUG) console.log(`Réactualisation de la page.`);
-      if (DEBUG) console.groupEnd();
-      window.location.reload();
+      if (userLocation === "home.html") {
+        if (DEBUG) console.log(`Réactualisation de la page.`);
+        if (DEBUG) console.groupEnd();
+        window.location.reload();
+      } else {
+        redirectToHomePage()
+        if (DEBUG) console.groupEnd();
+      }
     })
 }
 
@@ -145,6 +180,9 @@ function displayOnePost(post) {
   postInformations.appendChild(ownerInformationsContainer);
   displayUserInformationsToTheElement(post, ownerInformationsContainer)
   displayDateTimeToTheElement(post, "post", postInformations);
+  if (post.illustration !== "") {
+    displayIllustrationToTheElement(post, "post", postContainer);
+  }
   displayTextToTheElement(post, "post", postContainer);
 
   if (userLocation === "home.html") {

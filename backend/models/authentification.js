@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const dbConnection = require('../dbConnection');
+const DEBUG = require('../debug');
 const xss = require("xss");
 
 exports.signup = (email, hash) => {

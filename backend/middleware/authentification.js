@@ -10,7 +10,6 @@ module.exports = (req, res, next) => {
     const decodedToken = jwt.verify(token, process.env.TOKEN);
     const userId = decodedToken.userId;
     req.userId = userId;
-    console.log(req.userId)
     if (userId !== undefined) {
       req.userIsConnected = true;
     }

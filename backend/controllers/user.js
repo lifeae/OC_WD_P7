@@ -1,6 +1,6 @@
 const userMdl = require('../models/user');
 const DEBUG = require('../debug');
-
+const fs = require('fs')
 
 exports.getProfile = (req, res, next) => {
   userMdl.getProfile(req.params.id)
@@ -16,24 +16,45 @@ exports.getProfile = (req, res, next) => {
 };
 
 exports.modifyProfile = (req, res, next) => {
-  console.log(req.headers, req.file, req.body);
   let picture;
-  if (req.file !== undefined) {
-    picture = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
-  } else {
-    picture = null;
-  }
-  userMdl.modifyProfile(req.body.firstname, req.body.lastname, req.body.email, picture, req.body.position, req.body.phone, req.params.id)
-    .then(result => {
-      res.status(200).json({ result: result });
-      return;
+  userMdl.getProfile(req.params.id)
+    .then(result => result[0])
+    .then(user => {
+      if (req.file !== undefined) { // L'utilisateur a envoyé une image
+        // Supprimer l'ancienne image de l'API
+        fs.unlink(`./images/${user.picture.split("/images/")[1]}`, (err) => {
+          if (err) throw err;
+        });
+        // Mettre la nouvelle
+        picture = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+        userMdl.modifyProfile(req.body.firstname, req.body.lastname, req.body.email, picture, req.body.position, req.body.phone, req.params.id)
+          .then(result => {
+            res.status(200).json({ result: result });
+            return;
+          })
+      } else {
+        userMdl.modifyProfile(req.body.firstname, req.body.lastname, req.body.email, user.picture, req.body.position, req.body.phone, req.params.id)
+          .then(result => {
+            res.status(200).json({ result: result });
+            return;
+          })
+      }
     })
+
 };
 
 exports.deleteProfile = (req, res, next) => {
-  userMdl.deleteProfile(req.params.id)
-    .then(result => {
-      res.status(200).json({ result: result });
-      return;
+  userMdl.getProfile(req.params.id)
+    .then(result => result[0])
+    .then(user => {
+      fs.unlink(`./images/${user.picture.split("/images/")[1]}`, (err) => {
+        if (err) throw err;
+      });
+      userMdl.deleteProfile(req.params.id)
+        .then(result => {
+          res.status(200)
+            .json({ result: result });
+          return;
+        })
     })
 };

@@ -27,9 +27,11 @@ function getProfile() {
   fetch(`http://localhost:${PORT}/user/profile/${urlParameterUserId}`, request)
     .then(result => result.json())
     .then(data => {
+      userId = data.userId;
+      userIsAdmin = data.userIsAdmin;
       canTheUserAccessThisPage(data.userIsConnected);
       // l'utilisateur est propriétaire ou admin ? On lui présente les boutons de modification et de suppression
-      whatToDisplayDependingOnTheUserRightsOnThisProfile(data.userId, data.userIsAdmin)
+      whatToDisplayDependingOnTheUserRightsOnThisProfile(userId, userIsAdmin)
       return data.result[0];
     })
     .then(userProfile => {
@@ -41,33 +43,44 @@ function getProfile() {
 }
 
 function displayProfile(userProfile) {
-  let title = document.querySelector("h1");
-  title.innerHTML = `Profil de ${userProfile.firstname} ${userProfile.lastname}`;
+  let picture = document.createElement("img"),
+  userHasRightsElement = document.querySelector(".user-has-rights"),
+  userHasNoRightsElement = document.querySelector(".user-has-no-rights"),
+  title = document.querySelector("h1");
 
-  if (document.querySelector(".user-has-no-rights").style.display === 'none') {
+  title.innerHTML = `Profil de ${userProfile.firstname} ${userProfile.lastname}`;
+  picture.classList.add("picture");
+
+  if (userHasNoRightsElement.style.display === 'none') {
     // L'utilisateur a les droits
     let firstname = document.querySelector("#firstname"),
       lastname = document.querySelector("#lastname"),
       email = document.querySelector("#email"),
       position = document.querySelector("#position"),
       phone = document.querySelector("#phone");
-
+    
     firstname.value = userProfile.firstname;
     lastname.value = userProfile.lastname;
+    picture.src = userProfile.picture;
     email.value = userProfile.email;
     position.value = userProfile.position;
     phone.value = userProfile.phone;
+
+    userHasRightsElement.prepend(picture);
   } else {
     // L'utilisateur n'a pas les droits
     let email = document.querySelector(".email"),
-      position = document.querySelector(".position"),
-      phone = document.querySelector(".phone");
-
+    position = document.querySelector(".position"),
+    phone = document.querySelector(".phone");
+    
+    picture.src = userProfile.picture;
     email.innerHTML = userProfile.email;
     email.href = `mailto:${userProfile.email}`;
     position.innerHTML = userProfile.position;
     phone.innerHTML = userProfile.phone;
     phone.href = `tel:${userProfile.phone}`;
+
+    userHasNoRightsElement.prepend(picture);
   }
 }
 
@@ -81,63 +94,48 @@ function displayAdminStatus(userProfile) {
 }
 
 function modifyProfile() {
-
-  // let form = document.querySelector("form");
-  // const formData = new FormData(form);
-  // let body = {};
-
-  // for (var pair of formData.entries()) {
-  //   body[pair[0]] = pair[1];
-  // }
-
-  // body.picture = picture;
-
+  
   if (DEBUG) console.group(`Modification du profil de l'utilisateur.`);
-  let firstname = document.querySelector("#firstname").value,
-    lastname = document.querySelector("#lastname").value,
-    email = document.querySelector("#email").value,
-    position = document.querySelector("#position").value,
-    phone = document.querySelector("#phone").value;
+  const form = document.querySelector("#form");
 
-  let picture = document.querySelector("#picture").value;
+  const formData = new FormData(form);
 
-  let body = {
-    firstname: firstname,
-    lastname: lastname,
-    email: email,
-    picture: picture,
-    position: position,
-    phone: phone
+  let request = {
+    method: "PUT",
+    headers: {
+      "Accept": "application/json, text/plain, multipart/form-data, */*",
+      "Authorization": `Bearer ${sessionStorage.getItem("token")}` // ne cause pas l'échec de la requête même si aucun token n'est enregistré
+    },
+    body: formData
   }
 
-
-  console.log(body);
-
-  let request = getTheApiRequest(body, "PUT", "application/json");
   if (DEBUG) console.log(`Envoi de la requête :`, request);
-
-  fetch(`http://localhost:${PORT}/user/profile/${urlParameterUserId}`, request)
+    fetch(`http://localhost:${PORT}/user/profile/${urlParameterUserId}`, request)
     .then(result => result.json())
     .then(data => data.result)
     .then(userProfile => {
-      if (DEBUG) console.log(`Profil modifié !`);
+      if (DEBUG) console.log(`Profil modifié!`);
       if (DEBUG) console.groupEnd();
       // Réactualiser les données de la page
       window.location.reload();
-    });
+    })
+    .catch(console.error)
 }
 
 function deleteProfile() {
   if (DEBUG) console.group(`Demande de suppression du compte de l'utilisateur.`);
   let securityCheck = prompt('Êtes-vous certain de vouloir supprimer ce compte ? Si vous êtes sûrs, écrivez : "SUPPRIMER"');
   if (securityCheck === "SUPPRIMER") {
-    let request = getTheApiRequest(null, "DELETE", "application/json");
+    let request = getTheApiRequest(null, "DELETE");
     if (DEBUG) console.log(`Envoi de la requête :`, request);
 
     fetch(`http://localhost:${PORT}/user/profile/${urlParameterUserId}`, request)
       .then(result => {
+        console.log()
         if (DEBUG) console.log(`Compte supprimé !`);
-        logOut();
+        if (urlParameterUserId == userId) {
+          logOut();
+        }
         if (DEBUG) console.groupEnd();
       });
   }

@@ -11,12 +11,20 @@ function redirectToHomePage() {
 }
 
 function getTheApiRequest(body, method, contentType) {
+  let headers;
   // Préparation des paramètres de la requête
-  let headers = {
-    "Accept": "application/json, text/plain, multipart/form-data, */*",
-    "Content-Type": contentType,
-    "Authorization": `Bearer ${sessionStorage.getItem("token")}` // ne cause pas l'échec de la requête même si aucun token n'est enregistré
-  };
+  if (contentType !== null) {
+    headers = {
+      "Accept": "application/json, text/plain, multipart/form-data, */*",
+      "Content-Type": contentType,
+      "Authorization": `Bearer ${sessionStorage.getItem("token")}` // ne cause pas l'échec de la requête même si aucun token n'est enregistré
+    };
+  } else {
+    headers = {
+      "Accept": "application/json, text/plain, multipart/form-data, */*",
+      "Authorization": `Bearer ${sessionStorage.getItem("token")}` // ne cause pas l'échec de la requête même si aucun token n'est enregistré
+    };
+  }
 
   // Assemblage de la requête
   let request = {
@@ -65,7 +73,7 @@ function logOut() {
   if (DEBUG) console.group(`L'utisateur se déconnecte.`);
   sessionStorage.removeItem("token");
   if (DEBUG) console.log(`Token d'authentification et identifiant de l'utilisateur supprimés.`);
-  redirectToHomePage()
+  redirectToHomePage();
   if (DEBUG) console.groupEnd();
 }
 
@@ -100,6 +108,17 @@ function displayTextToTheElement(element, elementType, elementContainer) {
   }
 }
 
+function displayIllustrationToTheElement(element, elementType, elementContainer) {
+  let illustration = document.createElement("img");
+  elementContainer.appendChild(illustration);
+  illustration.src = element.illustration;
+  if (elementType === "post") {
+    illustration.classList.add("post-illustration");
+  } else if (elementType === "comment") {
+    illustration.classList.add("comment-illustration");
+  }
+}
+
 function displayDateTimeToTheElement(element, elementType, elementContainer) {
   let datetime = document.createElement("p");
   elementContainer.appendChild(datetime);
@@ -114,6 +133,8 @@ function displayDateTimeToTheElement(element, elementType, elementContainer) {
 function displayUserInformationsToTheElement(element, targetElement) {
   // Créer un lien vers le profil de l'auteur
   let profilePageLocation = `frontend/html/profile.html`,
+    ownerPicture = document.createElement("img"),
+    ownerName = document.createElement("p"),
     urlToUserProfilePage;
 
   if (window.location.origin !== "null") {
@@ -122,9 +143,15 @@ function displayUserInformationsToTheElement(element, targetElement) {
     urlToUserProfilePage = `${window.location.href.split("/frontend/html")[0]}/${profilePageLocation}?id=${element.id_user}`;
   }
 
+  ownerName.innerHTML = `${element.firstname} ${element.lastname}`;
+  ownerName.classList.add("owner-name");
+  ownerPicture.src = element.picture;
+  ownerPicture.classList.add("owner-picture");
   targetElement.classList.add("owner-informations");
-  targetElement.innerHTML = `${element.firstname} ${element.lastname}`;
   targetElement.href = urlToUserProfilePage;
+
+  targetElement.appendChild(ownerPicture);
+  targetElement.appendChild(ownerName);
 }
 
 function displayLinkToThePost(post, targetElement) {

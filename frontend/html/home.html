@@ -28,9 +28,12 @@
       <a id="my-profile"><button><i class="fas fa-user"></i> Mon profil</button></a>
       <button id="logout" onclick="logOut()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
     </nav>
-    <section id="new-post-container">
+    <section id="new-post-container" >
       <label for="new-post">Quoi de neuf ?</label>
-      <textarea type="text" id="new-post" placeholder="Ecrivez un nouveau post ..."></textarea>
+      <form enctype="multipart/form-data" name="form" id="form">
+        <textarea type="text" id="new-post" name="text" placeholder="Ecrivez un nouveau post ..."></textarea>
+        <input type="file" id="new-post-illustration" name="picture">
+      </form>
       <button type="submit" onclick="createPost()"><i class="fas fa-paper-plane"></i> Envoyer</button>
     </section>
     <section id="posts-container">

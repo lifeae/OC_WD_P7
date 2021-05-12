@@ -22,13 +22,13 @@
     <img id="logo" src="../images/icon-left-font.png" alt="logo de groupomania">
   </a>
   <h1>Connexion</h1>
-  <div id="form">
-    <label htmlFor="email">Email</label>
-    <input placeholder="Email" type="text" id="email"></input>
+  <form id="form" name="form" enctype="multipart/form-data">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="text" placeholder="Email"></input>
     <br>
-    <label htmlFor="password">Mot de passe</label>
-    <input type="password" id="password" placeholder="Mot de passe"></input>
-  </div>
+    <label for="password">Mot de passe</label>
+    <input id="password" name="password" type="password" placeholder="Mot de passe"></input>
+  </form>
   <button onclick="login()"><i class="fas fa-rocket"></i> Go !</button>
 </body>
 

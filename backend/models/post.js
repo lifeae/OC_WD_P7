@@ -14,10 +14,10 @@ exports.getAllPosts = () => {
   })
 };
 
-exports.createPost = (userId, text) => {
+exports.createPost = (userId, text, illustration) => {
   return new Promise((res, rej) => {
-    let sqlQuery = `INSERT INTO posts (id_user, text, datetime) VALUES (?, ?, CURRENT_TIMESTAMP);`;
-    sqlQuery = mysql.format(sqlQuery, [xss(userId), xss(text)]);
+    let sqlQuery = `INSERT INTO posts (id_user, text, illustration, datetime) VALUES (?, ?, ?, CURRENT_TIMESTAMP);`;
+    sqlQuery = mysql.format(sqlQuery, [xss(userId), xss(text), xss(illustration)]);
     dbConnection.query(sqlQuery, function (err, result, fields) {
       if (err) throw err;
       return res(result);
@@ -36,10 +36,10 @@ exports.getOnePost = (postId) => {
   })
 };
 
-exports.modifyPost = (text, postId) => {
+exports.modifyPost = (text, postId, illustration) => {
   return new Promise((res, rej) => {
-    let sqlQuery = `UPDATE posts SET text= ? WHERE posts.id= ? ;`;
-    sqlQuery = mysql.format(sqlQuery, [xss(text), xss(postId)]);
+    let sqlQuery = `UPDATE posts SET text = ?, illustration = ? WHERE posts.id = ?;`;
+    sqlQuery = mysql.format(sqlQuery, [xss(text), xss(illustration), xss(postId)]);
     dbConnection.query(sqlQuery, function (err, result, fields) {
       if (err) throw err;
       return res('Post modifié !');
