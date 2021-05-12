@@ -145,7 +145,6 @@ function displayDateTimeToTheElement(element, elementType, elementContainer) {
 function displayUserInformationsToTheElement(element, targetElement) {
   // Créer un lien vers le profil de l'auteur
   let profilePageLocation = `frontend/html/profile.html`,
-    ownerPicture = document.createElement("img"),
     ownerName = document.createElement("p"),
     urlToUserProfilePage;
 
@@ -154,16 +153,25 @@ function displayUserInformationsToTheElement(element, targetElement) {
   } else {
     urlToUserProfilePage = `${window.location.href.split("/frontend/html")[0]}/${profilePageLocation}?id=${element.id_user}`;
   }
-
-  ownerName.innerHTML = `${element.firstname} ${element.lastname}`;
-  ownerName.classList.add("owner-name");
-  ownerPicture.src = element.picture;
-  ownerPicture.classList.add("owner-picture");
-  targetElement.classList.add("owner-informations");
   targetElement.href = urlToUserProfilePage;
 
-  targetElement.appendChild(ownerPicture);
+  if (element.picture !== ``) {
+    let ownerPicture = document.createElement("img");
+    ownerPicture.src = element.picture;
+    ownerPicture.classList.add("owner-picture");
+    targetElement.appendChild(ownerPicture);
+  }
+  
+  if (element.firstame === `` || element.lastname === ``) {
+    ownerName.innerHTML = element.email;
+  } else {
+    ownerName.innerHTML = `${element.firstname} ${element.lastname}`;
+  }
+  ownerName.classList.add("owner-name");
+  targetElement.classList.add("owner-informations");
   targetElement.appendChild(ownerName);
+
+
 }
 
 function displayLinkToThePost(post, targetElement) {

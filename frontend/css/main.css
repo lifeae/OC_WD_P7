@@ -48,6 +48,11 @@ input {
   font-family: "Lato";
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
   width: 200px;
+  margin: auto;
+}
+
+input[type='file'] {
+  max-width: 400px;
 }
 
 button {
@@ -69,13 +74,6 @@ button:hover, button:focus {
   font-weight: bold;
 }
 
-input[type='file'] {
-  max-width: 400px;
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
-}
-
 form {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -84,9 +82,6 @@ form {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
 }
 
 .error {
@@ -172,5 +167,10 @@ form {
 
 #new-post-illustration {
   margin: auto;
+}
+
+a {
+  display: block;
+  margin: 16px;
 }
 /*# sourceMappingURL=main.css.map */

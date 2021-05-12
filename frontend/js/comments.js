@@ -65,13 +65,13 @@ function getStuffToCreateComment(targetElement) {
 }
 
 function createComment() {
-  let postId = this.closest("*[data-id]").dataset.id;
-  let textarea = document.querySelector(`*[data-id="${postId}"] .new-comment-textarea`);
-  let body = {
-    text: textarea.value,
-    id_post: postId
-  };
-  let request = getTheApiRequest(body, "POST", "application/json");
+  let postId = this.closest("*[data-id]").dataset.id,
+    textarea = document.querySelector(`*[data-id="${postId}"] .new-comment-textarea`),
+    body = {
+      text: textarea.value,
+      id_post: postId
+    },
+    request = getTheApiRequest(body, "POST", "application/json");
 
   fetch(`http://localhost:${PORT}/comments`, request)
     .then(result => result.json())

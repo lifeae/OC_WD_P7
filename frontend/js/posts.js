@@ -24,6 +24,8 @@ function createPost() {
       if (DEBUG) console.group(`Requête envoyée :`, request);
       if (DEBUG) console.log(`Requête envoyée :`, request);
       if (DEBUG) console.log(`Post crée !`);
+      text.value = ``;
+      illustration.value = ``;
       if (DEBUG) console.log(`Champ de saisie vidé !`);
       if (DEBUG) console.groupEnd();
       window.location.reload();

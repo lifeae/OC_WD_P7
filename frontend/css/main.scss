@@ -43,6 +43,11 @@ input {
   font-family: "Lato";
   padding: 0.5rem 1.5rem 0.5rem 1.5rem;
   width: 200px;
+  margin: auto;
+}
+
+input[type='file'] {
+  max-width: 400px;
 }
 
 button {
@@ -64,15 +69,9 @@ button:hover, button:focus {
   font-weight: bold;
 }
 
-input[type='file'] {
-  max-width: 400px;
-  align-self: center;
-}
-
 form {
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .error {
@@ -149,4 +148,9 @@ form {
 
 #new-post-illustration {
   margin: auto;
+}
+
+a {
+  display: block;
+  margin: 16px;
 }

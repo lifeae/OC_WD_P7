@@ -1,13 +1,15 @@
 function login() {
   // Récupérer les entrées dans les inputs
-  let email = document.querySelector("#email").value;
-  let password = document.querySelector("#password").value;
+  let email = document.querySelector("#email").value,
+    password = document.querySelector("#password").value;
 
-  // Envoyer ces données au backend
-  let request = getTheApiRequest({
+  let body = {
     email: email,
     password: password
-  }, "POST", "application/json");
+  };
+
+  // Envoyer ces données au backend
+  let request = getTheApiRequest(body, "POST", "application/json");
 
   fetch(`http://localhost:${PORT}/auth/login`, request)
     .then(result => {
@@ -38,16 +40,17 @@ function login() {
 
 function signup() {
   // Récupérer les entrées dans les inputs
-  let email = document.querySelector("#email").value;
-  let firstPassword = document.querySelector("#password").value;
-  let secondPassword = document.querySelector("#password2").value;
+  let email = document.querySelector("#email").value,
+    firstPassword = document.querySelector("#password").value,
+    secondPassword = document.querySelector("#password2").value,
+    body = {
+      email: email,
+      firstPassword: firstPassword,
+      secondPassword: secondPassword
+    };
 
   // Envoyer ces données au backend
-  let request = getTheApiRequest({
-    email: email,
-    firstPassword: firstPassword,
-    secondPassword: secondPassword
-  }, "POST", "application/json");
+  let request = getTheApiRequest(body, "POST", "application/json");
 
   fetch(`http://localhost:${PORT}/auth/signup`, request)
     .then(result => {
