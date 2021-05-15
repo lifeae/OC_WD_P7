@@ -14,7 +14,7 @@ function redirectToHomePage() {
   if (DEBUG) console.log(`Redirection vers la page d'accueil.`);
   let homePageLocation = `frontend/html/home.html`,
     urlToHomePage;
-  if (window.location.origin !== "null") {
+  if (window.location.origin !== "null" && window.location.origin !== "file://") {
     urlToHomePage = `${window.location.origin}/${homePageLocation}`
   } else {
     urlToHomePage = `${window.location.href.split("/frontend/html")[0]}/${homePageLocation}`;
@@ -101,7 +101,7 @@ function addLinkToUserConnectedProfile(userId) {
   let profilePageLocation = `frontend/html/profile.html`,
     urlToUserProfilePage;
 
-  if (window.location.origin !== "null") {
+  if (window.location.origin !== "null" && window.location.origin !== "file://") {
     urlToUserProfilePage = `${window.location.origin}/${profilePageLocation}?id=${userId}`;
   } else {
     urlToUserProfilePage = `${window.location.href.split("/frontend/html")[0]}/${profilePageLocation}?id=${userId}`;
@@ -148,7 +148,7 @@ function displayUserInformationsToTheElement(element, targetElement) {
     ownerName = document.createElement("p"),
     urlToUserProfilePage;
 
-  if (window.location.origin !== "null") {
+  if (window.location.origin !== "null" && window.location.origin !== "file://") {
     urlToUserProfilePage = `${window.location.origin}/${profilePageLocation}?id=${element.id_user}`;
   } else {
     urlToUserProfilePage = `${window.location.href.split("/frontend/html")[0]}/${profilePageLocation}?id=${element.id_user}`;
@@ -183,7 +183,7 @@ function displayLinkToThePost(post, targetElement) {
 
   let postPageLocation = `frontend/html/post.html`,
     urlToPostPage;
-  if (window.location.origin !== "null") {
+  if (window.location.origin !== "null" && window.location.origin !== "file://") {
     urlToPostPage = `${window.location.origin}/${postPageLocation}?id=${post.id}`;
   } else {
     urlToPostPage = `${window.location.href.split("/frontend/html")[0]}/${postPageLocation}?id=${post.id}`;
